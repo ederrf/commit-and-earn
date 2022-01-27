@@ -8483,11 +8483,11 @@ const run = async () => {
 
     console.log(`Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`);
 
-    // await octokit.issues.createComment({
-    //     ...context.repo,
-    //     issue_number: pull_request.number,
-    //     body: `Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`
-    // });
+    await octokit.issues.createComment({
+        ...context.repo,
+        issue_number: pull_request.number,
+        body: `Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`
+    });
 }
 
 run().catch(e => core.setFailed(e.message));
