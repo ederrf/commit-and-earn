@@ -8474,10 +8474,20 @@ const github = __nccwpck_require__(5438);
 const run = async () => {
     const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN');
 
+    if ( typeof GITHUB_TOKEN !== 'string' ) {
+        throw new Error('Invalid GITHUB_TOKEN: did you forget to set it in your action config?');
+    }
+
     const octokit = github.getOctokit(GITHUB_TOKEN);
 
     const { context = {} } = github;
     const { pull_request } = context.payload;
+
+    if ( !pull_request ) {
+        throw new Error('Could not find pull request!')
+    };
+
+    console.log(`Found pull request: ${pull_request.number}`);
 
     const amount = Math.floor((Math.random())*(5))+1;
 
