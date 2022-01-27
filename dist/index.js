@@ -8481,14 +8481,16 @@ const run = async () => {
 
     const amount = Math.floor((Math.random())*(5))+1;
 
-    await octokit.issues.createComment({
-        ...context.repo,
-        issue_number: pull_request.number,
-        body: `Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`
-    });
+    console.log(`Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`);
+
+    // await octokit.issues.createComment({
+    //     ...context.repo,
+    //     issue_number: pull_request.number,
+    //     body: `Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`
+    // });
 }
 
-run();
+run().catch(e => core.setFailed(e.message));
 })();
 
 module.exports = __webpack_exports__;
