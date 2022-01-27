@@ -17,7 +17,7 @@ const run = async () => {
         throw new Error('Could not find pull request!')
     };
 
-    console.log(`Found pull request: ${pull_request.number}`);
+    console.log(`Found pull request: ${pull_request.number} and octokit: ${octokit}`);
 
     const amount = Math.floor((Math.random())*(5))+1;
 
