@@ -17,7 +17,7 @@ const run = async () => {
         ...context.repo,
         issue_number: pull_request.number,
         body: `Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`
-    }).catch(error => { console.log('caught', error.message); });;
+    });
 }
 
-run();
+run().catch(e => core.setFailed(e.message));
