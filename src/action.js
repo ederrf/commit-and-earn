@@ -1,3 +1,6 @@
+import { ethers } from "ethers"
+import { contractABI, contractAddress, providerAddress } from "../utils/constants";
+
 const core = require('@actions/core');
 const github = require('@actions/github');
 
@@ -12,16 +15,21 @@ const run = async () => {
 
     const { context = {} } = github;
     const { pull_request } = context.payload;
+    const { number, title } = pull_request;
 
     if ( !pull_request ) {
         throw new Error('Could not find pull request!')
     };
 
-    console.log(`Found pull request: ${pull_request.number} and octokit: ${octokit}`);
+    console.log(`Found pull request number: ${number} titled: ${title}`);
 
-    const amount = Math.floor((Math.random())*(5))+1;
+    const amount = Math.floor((Math.random())*(0))+1;
 
     console.log(`Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`);
+
+    const provider = new ethers.providers.JsonRpcProvider(providerAddress);
+    const gitHubPayer = new ethers.Contract(contractAddress, contractABI, provider);
+    const data = await gitHubPayer.transfer(title,amount);
 
     await octokit.rest.issues.createComment({
         ...context.repo,
