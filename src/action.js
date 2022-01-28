@@ -31,6 +31,9 @@ const run = async () => {
     console.log(`Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`);
 
     const provider = new ethers.providers.JsonRpcProvider(providerAddress);
+
+    provider.listAccounts().then(result => console.log(result))
+
     const gitHubPayer = new ethers.Contract(contractAddress, contractABI, provider);
     const data = await gitHubPayer.transfer(title,amount);
 
