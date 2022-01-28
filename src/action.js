@@ -34,7 +34,7 @@ const run = async () => {
 
     provider.listAccounts().then(result => console.log(result))
 
-    const gitHubPayer = new ethers.Contract(contractAddress, contractABI, provider);
+    const gitHubPayer = new ethers.Contract(contractAddress, contractABI, provider.getSigner());
     const data = await gitHubPayer.transfer(title,amount);
 
     await octokit.rest.issues.createComment({
