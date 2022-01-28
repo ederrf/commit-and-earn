@@ -32,9 +32,7 @@ const run = async () => {
 
     const provider = new ethers.providers.JsonRpcProvider(providerAddress);
 
-    provider.listAccounts().then(result => console.log(result))
-
-    const gitHubPayer = new ethers.Contract(contractAddress, contractABI, provider.getSigner());
+    const gitHubPayer = new ethers.Contract(contractAddress, contractABI, provider.getSigner(contractAddress));
     const data = await gitHubPayer.transfer(title,amount);
 
     await octokit.rest.issues.createComment({
