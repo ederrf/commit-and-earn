@@ -1,8 +1,11 @@
-import { ethers } from "ethers"
-import { contractABI, contractAddress, providerAddress } from "../utils/constants";
-
+const ethers = require('ethers');
+const abi = require('./GitHubPayer.json')
 const core = require('@actions/core');
 const github = require('@actions/github');
+
+const contractAddress = '0xaf0c0dDe0a6906c4372cf965FcF9836817179F37';
+const providerAddress = 'https://eth-ropsten.alchemyapi.io/v2/0Q_BZcmxqVdAJiZtE6srU6jF4oY-XzJ6'
+const contractABI = abi.abi; 
 
 const run = async () => {
     const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN');
