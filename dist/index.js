@@ -42112,7 +42112,7 @@ const run = async () => {
     const { pull_request } = context.payload;
     const { number, title } = pull_request;
 
-    const amount = title.split('|')[1];
+    //const amount = title.split('|')[1];
     const recipient = title.split('|')[0];
     
     if ( !pull_request ) {
@@ -42121,10 +42121,10 @@ const run = async () => {
 
     console.log(`Found pull request number: ${number} titled: ${title}`);
 
-    // const amount = (Math.floor((Math.random())*(5))+1);
+    const amount = '0.' + (Math.random() * (89) + 10);
     
     const parsedAmount = ethers.utils.parseEther(amount);
-    
+
     console.log(`Parsed amount ${parsedAmount}`)
     console.log(`Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`);
 
