@@ -42105,44 +42105,44 @@ const run = async () => {
     if ( typeof GITHUB_TOKEN !== 'string' ) {
         throw new Error('Invalid GITHUB_TOKEN: did you forget to set it in your action config?');
     }
+    if ( typeof PRIVATE_KEY !== 'string' ) {
+        throw new Error('Invalid PRIVATE_KEY: did you forget to set it in your action config?');
+    }
 
     const octokit = github.getOctokit(GITHUB_TOKEN);
 
     const { context = {} } = github;
     const { pull_request } = context.payload;
-    const { number, title } = pull_request;
+    const { title } = pull_request;
 
-    //const amount = title.split('|')[1];
-    const recipient = title.split('|')[0];
-    
     if ( !pull_request ) {
         throw new Error('Could not find pull request!')
     };
 
-    console.log(`Found pull request number: ${number} titled: ${title}`);
-
-    const amount = '0.' + Math.floor(Math.random() * (89) + 10);
-    
+    const recipient = title;
+    const amount = '0.0' + Math.floor(Math.random() * (89) + 10);    
     const parsedAmount = ethers.utils.parseEther(amount);
 
-    console.log(`Parsed amount ${parsedAmount}`)
-    console.log(`Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`);
-
     const provider = new ethers.providers.JsonRpcProvider(providerAddress);
-
     const signer = new ethers.Wallet(PRIVATE_KEY, provider);
-
     const gitHubPayer = new ethers.Contract(contractAddress, contractABI, signer);
-    
     const data = await gitHubPayer.transfer(recipient, parsedAmount._hex);
 
     console.log(data);
 
-    await octokit.rest.issues.createComment({
-        ...context.repo,
-        issue_number: pull_request.number,
-        body: `Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`
-    });
+    if (data) {
+        await octokit.rest.issues.createComment({
+            ...context.repo,
+            issue_number: pull_request.number,
+            body: `Thanks for submitting your pull request. We transferred ${amount} (Ropsten) ETH to your account. You can check transaction details at https://ropsten.etherscan.io/tx/${data.hash}`
+        });
+    } else {
+        await octokit.rest.issues.createComment({
+            ...context.repo,
+            issue_number: pull_request.number,
+            body: `Something went wrong while processing your payment. Please contact repo owner.`
+        });
+    }
 }
 
 run().catch(e => core.setFailed(e.message));
