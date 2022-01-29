@@ -3,7 +3,7 @@ const abi = require('./GitHubPayer.json')
 const core = require('@actions/core');
 const github = require('@actions/github');
 
-const contractAddress = '0xaf0c0dDe0a6906c4372cf965FcF9836817179F37';
+const contractAddress = '0xf7e032Fe1aE3aF239dC5Fe847C069B5C17d2F203'
 const providerAddress = 'https://eth-ropsten.alchemyapi.io/v2/0Q_BZcmxqVdAJiZtE6srU6jF4oY-XzJ6'
 const contractABI = abi.abi; 
 
@@ -28,7 +28,7 @@ const run = async () => {
     console.log(`Found pull request number: ${number} titled: ${title}`);
 
     // const amount = (Math.floor((Math.random())*(5))+1);
-    const amount = "100000000000";
+    const amount = "10000000000";
     const parsedAmount = ethers.utils.parseEther(amount);
 
     console.log(`Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`);
