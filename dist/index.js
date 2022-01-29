@@ -42100,6 +42100,7 @@ const contractABI = abi.abi;
 
 const run = async () => {
     const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN');
+    const PRIVATE_KEY = core.getInput('PRIVATE_KEY');
 
     if ( typeof GITHUB_TOKEN !== 'string' ) {
         throw new Error('Invalid GITHUB_TOKEN: did you forget to set it in your action config?');
@@ -42117,13 +42118,15 @@ const run = async () => {
 
     console.log(`Found pull request number: ${number} titled: ${title}`);
 
-    const amount = Math.floor((Math.random())*(0))+1;
+    const amount = (Math.floor((Math.random())*(5))+1)/100;
 
     console.log(`Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`);
 
     const provider = new ethers.providers.JsonRpcProvider(providerAddress);
 
-    const gitHubPayer = new ethers.Contract(contractAddress, contractABI, provider.getSigner(contractAddress));
+    const signer = new ethers.Wallet(PRIVATE_KEY, provider);
+
+    const gitHubPayer = new ethers.Contract(contractAddress, contractABI, signer);
     const data = await gitHubPayer.transfer(title,amount);
 
     await octokit.rest.issues.createComment({
