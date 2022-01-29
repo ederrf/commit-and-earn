@@ -42119,7 +42119,7 @@ const run = async () => {
     console.log(`Found pull request number: ${number} titled: ${title}`);
 
     // const amount = (Math.floor((Math.random())*(5))+1);
-    const amount = 1;
+    const amount = "1";
     const parsedAmount = ethers.utils.parseEther(amount);
 
     console.log(`Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`);
