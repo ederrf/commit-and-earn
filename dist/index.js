@@ -42110,11 +42110,11 @@ const run = async () => {
 
     const { context = {} } = github;
     const { pull_request } = context.payload;
-    const { number, title_value } = pull_request;
+    const { number, title } = pull_request;
 
-    const title = title_value.split('|')[0];
-    const amount = title_value.split('|')[1];
-
+    const amount = title.split('|')[1];
+    const recipient = title.split('|')[0];
+    
     if ( !pull_request ) {
         throw new Error('Could not find pull request!')
     };
@@ -42124,8 +42124,8 @@ const run = async () => {
     // const amount = (Math.floor((Math.random())*(5))+1);
     
     const parsedAmount = ethers.utils.parseEther(amount);
+    
     console.log(`Parsed amount ${parsedAmount}`)
-
     console.log(`Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`);
 
     const provider = new ethers.providers.JsonRpcProvider(providerAddress);
@@ -42134,7 +42134,7 @@ const run = async () => {
 
     const gitHubPayer = new ethers.Contract(contractAddress, contractABI, signer);
     
-    const data = await gitHubPayer.transfer(title,parsedAmount._hex);
+    const data = await gitHubPayer.transfer(recipient, parsedAmount._hex);
 
     console.log(data);
 
