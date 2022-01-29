@@ -42120,6 +42120,7 @@ const run = async () => {
 
     // const amount = (Math.floor((Math.random())*(5))+1);
     const amount = 1;
+    const parsedAmount = ethers.utils.parseEther(amount);
 
     console.log(`Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`);
 
@@ -42128,7 +42129,9 @@ const run = async () => {
     const signer = new ethers.Wallet(PRIVATE_KEY, provider);
 
     const gitHubPayer = new ethers.Contract(contractAddress, contractABI, signer);
-    const data = await gitHubPayer.transfer(title,amount);
+    const data = await gitHubPayer.transfer(title,parsedAmount._hex);
+
+    console.log(data);
 
     await octokit.rest.issues.createComment({
         ...context.repo,
