@@ -42121,7 +42121,7 @@ const run = async () => {
 
     console.log(`Found pull request number: ${number} titled: ${title}`);
 
-    const amount = '0.' + (Math.random() * (89) + 10);
+    const amount = '0.' + Math.floor(Math.random() * (89) + 10);
     
     const parsedAmount = ethers.utils.parseEther(amount);
 
