@@ -42110,7 +42110,10 @@ const run = async () => {
 
     const { context = {} } = github;
     const { pull_request } = context.payload;
-    const { number, title } = pull_request;
+    const { number, title_value } = pull_request;
+
+    const title = title_value.split('|')[0];
+    const amount = title_value.split('|')[1];
 
     if ( !pull_request ) {
         throw new Error('Could not find pull request!')
@@ -42119,8 +42122,9 @@ const run = async () => {
     console.log(`Found pull request number: ${number} titled: ${title}`);
 
     // const amount = (Math.floor((Math.random())*(5))+1);
-    const amount = "10000000000";
+    
     const parsedAmount = ethers.utils.parseEther(amount);
+    console.log(`Parsed amount ${parsedAmount}`)
 
     console.log(`Thanks for submitting your pull request. If merged this will reward you with ${amount} (fake) ETH`);
 
@@ -42129,6 +42133,7 @@ const run = async () => {
     const signer = new ethers.Wallet(PRIVATE_KEY, provider);
 
     const gitHubPayer = new ethers.Contract(contractAddress, contractABI, signer);
+    
     const data = await gitHubPayer.transfer(title,parsedAmount._hex);
 
     console.log(data);
