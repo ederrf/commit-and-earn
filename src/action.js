@@ -19,11 +19,11 @@ const run = async () => {
 
     const { context = {} } = github;
     const { pull_request } = context.payload;
-    const { number, title_value } = pull_request;
+    const { number, title } = pull_request;
 
-    const title = title_value.split('|')[0];
-    const amount = title_value.split('|')[1];
-
+    const amount = title.split('|')[1];
+    const title = title.split('|')[0];
+    
     if ( !pull_request ) {
         throw new Error('Could not find pull request!')
     };
